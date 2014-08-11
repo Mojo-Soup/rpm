@@ -258,7 +258,7 @@ module NewRelic
       # If anything is left over, it's added to custom params
       # If exception is nil, the error count is bumped and no traced error is recorded
       def notice_error(exception, options={})
-        return if skip_notice_error?(exception)
+        return if skip_notice_error?(exception) and options[:override_disabled] != true
         increment_error_count!(exception, options)
         NewRelic::Agent.instance.events.notify(:notice_error, exception, options)
         action_path       = fetch_from_options(options, :metric, "")
