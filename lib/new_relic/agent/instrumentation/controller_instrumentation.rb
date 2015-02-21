@@ -366,7 +366,7 @@ module NewRelic
                 perform_action_without_newrelic_trace(*args)
               end
             rescue => e
-              txn.notice_error(e)
+              txn.notice_error(e) unless defined?(Delayed) and defined?(Delayed::ResubmitJobError) and e.class == Delayed::ResubmitJobError
               raise
             end
 
